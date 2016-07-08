@@ -37,10 +37,10 @@ void problem(DomainS *pDomain)
 
   /* calculate the initial perturbation */
   n = sqrt(9.0/10.0);           /* brunt        */
-  kx = 4.0 * PI / lx;           /* wave vector  */
-  omega = 0.5 * n;              /* wave freq    */
+  kx = 2.0 * PI / lx;           /* wave vector  */
+  kz = 3.0 * PI / ly;
 
-  /* TODO: calculate kz(kx, omega) */
+  omega = n * (kx / sqrt(SQR(kx)+SQR(kz)));
 
   amp = 1.0e-3;
 
@@ -53,14 +53,17 @@ void problem(DomainS *pDomain)
       P   = pow(1.0 + x2/2, -2.0);
 
       /* eigenmodes */
-      /* TODO: drho = ?? */
-      /* TODO: dP   = ?? */
-      /* TODO: dvx  = ?? */
-      /* TODO: dvz  = ?? */
+      dvz = amp * (cos(-kx*x1 + kz*x2) - cos(kx*x1 + kz*x2));
+      dvx = (kz/kx) * amp * (cos(-kx*x1 + kz*x2) + cos(kx*x1 + kz*x2));
+
+      drho = omega * amp / (SQR(kx)/(SQR(kx)+SQR(kz))) * (sin(kx*x1 + kz*x2) - sin(-kx*x1 + kz*x2));
+
+      dP = 0.0;
 
       /* write values to grid */
       pGrid->U[0][j][i].d = rho * (1.0 + drho);
-      pGrid->U[0][j][i].E =   P * (1.0 + dP)/Gamma_1;
+      pGrid->U[0][j][i].E =   P * (1.0 + dP)/Gamma_1; /* +
+                                                         second-order terms... */
 
       pGrid->U[0][j][i].M1 = dvx * rho;
       pGrid->U[0][j][i].M2 = dvz * rho;
