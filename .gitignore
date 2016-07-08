@@ -1,0 +1,32 @@
+# Ignore objects and archives
+*.o
+*.a
+
+# Other source repository archive directories (protects when importing)
+.hg
+.svn
+CVS
+
+# Ignore emacs backups and OSX stuff
+*~
+\#*
+.\#*
+.DS_Store
+
+# Ignore
+config.log
+config.status
+src/defs.h
+bin/*
+Makefile
+Makedepend
+Makeoptions
+src/problem.c
+autom4te.cache/*
+/src/config.h
+/athena4.2/configure
+/athena4.2/src/config.h
+/athena4.2/src/defs.h
+/athena4.2/src/problem.c
+bin/
+autom4te.cache
