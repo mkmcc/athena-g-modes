@@ -62,7 +62,7 @@ void problem(DomainS *pDomain)
 
       /* write values to grid */
       pGrid->U[0][j][i].d = rho * (1.0 + drho);
-      pGrid->U[0][j][i].E =   P * (1.0 + dP)/Gamma_1; /* +
+      pGrid->U[0][j][i].E =   P * (1.0 + dP)/Gamma_1 + 0.5*rho*(SQR(dvx)+SQR(dvz)) ; /* +
                                                          second-order terms... */
 
       pGrid->U[0][j][i].M1 = dvx * rho;
