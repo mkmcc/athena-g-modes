@@ -32,7 +32,7 @@ void problem(DomainS *pDomain)
   kx = 4.0 * PI / lx;           /* wave vector  */
   omega = 0.5 * n;              /* wave freq    */
 
-  kx = sqrt(SQR(n/omega)-1.0) * kz;
+  kz = sqrt(SQR(n/omega)-1.0) * kx;
 
   H = 2.0/3.0;
 
