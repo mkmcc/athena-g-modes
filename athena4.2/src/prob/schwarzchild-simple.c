@@ -48,7 +48,7 @@ void problem(DomainS *pDomain)
 
       /* eigenmodes */
       dvz = amp * sin(kx*x1) * sin(kz*x2);
-      dvx = amp * (kx/kz) * cos(kx*x1) * cos(kz*x2);
+      dvx = amp * (kz/kx) * cos(kx*x1) * cos(kz*x2);
 
       drho = -(SQR(n)/omega) * amp * sin(kx*x1) * cos(kz*x2);
 
