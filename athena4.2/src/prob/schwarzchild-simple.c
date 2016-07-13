@@ -20,7 +20,7 @@ void problem(DomainS *pDomain)
   int is,ie,js,je;
   Real amp,x1,x2,x3,lx,ly;
   Real rho, P, drho, dP;
-  Real n, omega, kx, kz, dvx, dvz, H;
+  Real n, omega, kx, kz, k, dvx, dvz, H;
 
   is = pGrid->is;  ie = pGrid->ie;
   js = pGrid->js;  je = pGrid->je;
@@ -34,6 +34,8 @@ void problem(DomainS *pDomain)
 
   kz = sqrt(SQR(n/omega)-1.0) * kx;
 
+  k = sqrt(SQR(kx)+SQR(kz));
+
   H = 2.0/3.0;
 
   amp = 1.0e-3;
@@ -42,22 +44,35 @@ void problem(DomainS *pDomain)
     for (i=is; i<=ie; i++) {
       cc_pos(pGrid,i,j,0,&x1,&x2,&x3);
 
+
       /* background */
       rho = pow(1.0 + x2/2, -3.0);
       P   = pow(1.0 + x2/2, -2.0);
 
+
       /* eigenmodes */
-      dvz = -amp * sin(kx*x1) * sin(kz*x2);
-      dvx = -amp * (kz/kx) * cos(kx*x1) * cos(kz*x2);
+      dvz  = -amp * sin(kx*x1) * sin(kz*x2);
+      dvx  = -amp * (kz/kx) * cos(kx*x1) * cos(kz*x2);
 
       drho = -(SQR(n)/omega) * amp * sin(kx*x1) * cos(kz*x2);
 
-      dP = 0.0;
+      dP   = 0.0;
 
+
+      /* add the kH terms */
+      dvx  += amp * (kz/SQR(kx)) * SQR(n) * cos(kx*x1) * sin(kz*x2);
+
+      drho += ((3.0*rho)/(5.0*P*k)) * SQR(n)/omega * dvz;
+
+      dP   += -kz/SQR(k) * SQR(n)/omega * dvz;
+
+
+      /* scale eigenfunctions with height */
       dvx *= exp(x2/H);
       dvz *= exp(x2/H);
 
       drho *= exp(x2/H);
+
 
       /* write to grid */
       pGrid->U[0][j][i].d = rho * (1.0 + drho);
