@@ -37,7 +37,7 @@ void problem(DomainS *pDomain)
   k = sqrt(SQR(kx)+SQR(kz));
 
   H  = 2.0/3.0;
-  Hg = (5.0*P)/(3.0*rho);
+  Hg = 5.0/3.0;
 
   amp = 1.0e-3;
 
